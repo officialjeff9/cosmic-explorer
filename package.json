@@ -1,0 +1,16 @@
+{
+  "name": "space-observatory-agents",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently --kill-others-on-fail --names \"API,WEB\" --prefix-colors \"cyan,magenta\" \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "bash -c 'ROOT=$(pwd); [ -d .venv ] || python3 -m venv .venv; .venv/bin/pip install -q -r backend/requirements.txt; PYTHONPATH=$ROOT .venv/bin/uvicorn backend.main:app --reload --reload-dir backend --reload-dir agents --reload-dir pipelines --host 0.0.0.0 --port 8000 --log-level info'",
+    "dev:frontend": "bash -c 'cd frontend && npm install --prefer-offline --silent && npm run dev'",
+    "install:all": "bash -c 'python3 -m venv .venv && .venv/bin/pip install -q -r backend/requirements.txt && cd frontend && npm install'",
+    "install:backend": "bash -c 'python3 -m venv .venv && .venv/bin/pip install -r backend/requirements.txt'",
+    "install:frontend": "bash -c 'cd frontend && npm install'"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

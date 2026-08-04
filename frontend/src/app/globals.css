@@ -1,0 +1,226 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
+
+/* ── CSS custom properties ─────────────────────────────────── */
+:root {
+  --background:    #050505;
+  --foreground:    #f0f4ff;
+  --neon-mint:     #2DD4BF;   /* exoplanet — Bioluminescent Mint/Teal  */
+  --neon-amber:    #F59E0B;   /* black hole — Accretion Disk Gold       */
+  --neon-indigo:   #4F46E5;   /* galaxy — Deep Indigo/Nebula Blue       */
+  --neon-green:    #4ade80;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: "Inter", system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+/* ── Scanlines — fixed overlay across the whole UI ─────────── */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 5;           /* above starfield canvas, below content */
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent        0px,
+    transparent        3px,
+    rgba(0, 0, 0, 0.13) 3px,
+    rgba(0, 0, 0, 0.13) 4px
+  );
+  animation: scanline-drift 12s linear infinite;
+}
+
+@keyframes scanline-drift {
+  from { background-position: 0 0; }
+  to   { background-position: 0 200px; }
+}
+
+/* ── Starfield canvas ───────────────────────────────────────── */
+#starfield-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #080510; }
+::-webkit-scrollbar-thumb { background: #1e0d4a; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--neon-mint); }
+
+/* ══════════════════════════════════════════════════════════════
+   GLASSMORPHISM UTILITY
+   Usage:  className="glass-panel"
+   ══════════════════════════════════════════════════════════════ */
+.glass-panel {
+  background:      rgba(5, 2, 12, 0.55);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border:          1px solid rgba(255, 255, 255, 0.07);
+  box-shadow:      0 4px 32px rgba(0, 0, 0, 0.55),
+                   inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+.glass-panel-bright {
+  background:      rgba(8, 5, 20, 0.65);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border:          1px solid rgba(255, 255, 255, 0.10);
+  box-shadow:      0 4px 32px rgba(0, 0, 0, 0.6),
+                   inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* ── Agent card ─────────────────────────────────────────────── */
+.agent-card {
+  @apply relative rounded-xl p-5 transition-all duration-300;
+  background:      rgba(5, 2, 12, 0.60);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  border:          1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:      0 4px 24px rgba(0, 0, 0, 0.45),
+                   inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+.agent-card:hover {
+  border-color: rgba(45, 212, 191, 0.25);
+  box-shadow:
+    0 0 20px rgba(45, 212, 191, 0.12),
+    0 4px 24px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+/* Status-specific neon border glows */
+.agent-card--active {
+  border-color: rgba(74, 222, 128, 0.35) !important;
+  box-shadow:
+    0 0 0 1px rgba(74, 222, 128, 0.15),
+    0 0 18px 2px rgba(74, 222, 128, 0.20),
+    0 4px 24px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(74, 222, 128, 0.06) !important;
+}
+.agent-card--processing {
+  border-color: rgba(124, 58, 237, 0.50) !important;
+  box-shadow:
+    0 0 0 1px rgba(124, 58, 237, 0.20),
+    0 0 22px 4px rgba(124, 58, 237, 0.30),
+    0 4px 24px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(124, 58, 237, 0.08) !important;
+}
+.agent-card--alert {
+  border-color: rgba(245, 158, 11, 0.45) !important;
+  box-shadow:
+    0 0 0 1px rgba(245, 158, 11, 0.18),
+    0 0 20px 4px rgba(245, 158, 11, 0.25),
+    0 4px 24px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(245, 158, 11, 0.06) !important;
+}
+.agent-card--idle {
+  border-color: rgba(100, 116, 139, 0.25) !important;
+}
+
+/* ── Badges ─────────────────────────────────────────────────── */
+.badge {
+  @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium font-mono tracking-wide;
+}
+.badge-active {
+  @apply badge;
+  background: rgba(74, 222, 128, 0.10);
+  color:       #4ade80;
+  border:      1px solid rgba(74, 222, 128, 0.35);
+  text-shadow: 0 0 8px rgba(74, 222, 128, 0.7);
+}
+.badge-idle {
+  @apply badge bg-slate-800/50 text-slate-400 border border-slate-600/40;
+}
+.badge-alert {
+  @apply badge;
+  background: rgba(245, 158, 11, 0.10);
+  color:       #F59E0B;
+  border:      1px solid rgba(245, 158, 11, 0.40);
+  text-shadow: 0 0 8px rgba(245, 158, 11, 0.7);
+}
+.badge-processing {
+  @apply badge;
+  background: rgba(124, 58, 237, 0.15);
+  color:       #a78bfa;
+  border:      1px solid rgba(124, 58, 237, 0.45);
+  text-shadow: 0 0 8px rgba(124, 58, 237, 0.6);
+}
+
+/* ── Glow text helpers ───────────────────────────────────────── */
+.glow-text       { text-shadow: 0 0 18px rgba(45, 212, 191, 0.7), 0 0 40px rgba(79,70,229,0.4); }
+.glow-mint       { text-shadow: 0 0 14px rgba(45, 212, 191, 0.85); }
+.glow-neon-mint  { color: var(--neon-mint);  text-shadow: 0 0 12px rgba(45, 212, 191, 0.8); }
+.glow-neon-amber { color: var(--neon-amber); text-shadow: 0 0 12px rgba(245, 158, 11, 0.8); }
+
+/* ── Console / telemetry lines ───────────────────────────────── */
+.console-line { @apply font-mono text-xs leading-relaxed; }
+.console-line.info    { color: #94a3b8; }
+.console-line.success { color: #4ade80; }
+.console-line.warn    { color: #fbbf24; }
+.console-line.error   { color: var(--neon-amber); }
+.console-line.data    { color: var(--neon-mint); }
+
+/* ── Radar ping animation (used by SkyMap overlay DOM nodes) ─── */
+/*
+  Applied to absolutely-positioned <span> ring elements sitting
+  over the canvas wrapper.  Each ring is staggered with a delay.
+*/
+@keyframes radar-ring-expand {
+  0%   { transform: translate(-50%, -50%) scale(0.4); opacity: 0.85; }
+  100% { transform: translate(-50%, -50%) scale(3.6);  opacity: 0; }
+}
+
+.radar-ring {
+  position:      absolute;
+  width:         22px;
+  height:        22px;
+  border-radius: 50%;
+  border:        1.5px solid var(--neon-mint);
+  pointer-events: none;
+  transform-origin: center;
+  animation:     radar-ring-expand 1.8s ease-out infinite;
+}
+.radar-ring:nth-child(2) { animation-delay: 0.55s; }
+.radar-ring:nth-child(3) { animation-delay: 1.10s; }
+
+/* ── Black hole void + halo (used by SkyMap overlay DOM nodes) ── */
+@keyframes bh-halo-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 2px #F59E0B66,
+      0 0 8px 3px #F59E0B44,
+      0 0 18px 5px #92610022;
+  }
+  50% {
+    box-shadow:
+      0 0 0 3px #F59E0Baa,
+      0 0 14px 6px #F59E0B66,
+      0 0 30px 8px #92610044;
+  }
+}
+
+.bh-marker {
+  position:      absolute;
+  width:         8px;
+  height:        8px;
+  border-radius: 50%;
+  transform:     translate(-50%, -50%);
+  pointer-events: none;
+  /* Central void — deep black with faint amber rim */
+  background:    radial-gradient(circle at 38% 36%,
+                   #ffffff12 0%,
+                   #000000 40%,
+                   #1a0a00 100%);
+  animation:     bh-halo-pulse 2.4s ease-in-out infinite;
+}
