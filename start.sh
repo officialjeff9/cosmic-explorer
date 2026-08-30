@@ -74,7 +74,7 @@ fi
 
 # ── 4. Launch both servers ────────────────────────────────────
 log "Backend  → http://localhost:8000  |  Docs: http://localhost:8000/docs"
-log "Frontend → http://localhost:3000"
+log "Frontend → http://localhost:3001"
 echo ""
 
 # Shutdown handler — kill by saved PIDs, not by pipeline-end PIDs

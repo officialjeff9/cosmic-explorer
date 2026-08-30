@@ -215,7 +215,7 @@ uvicorn backend.main:app --reload --port 8000
 # 2. Frontend (separate terminal)
 cd frontend
 npm install
-npm run dev          # → http://localhost:3000
+npm run dev          # → http://localhost:3001
 ```
 
 ### Docker Compose

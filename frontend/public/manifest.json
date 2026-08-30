@@ -1,0 +1,9 @@
+{
+  "name": "Cosmic Explorer",
+  "short_name": "Cosmic Explorer",
+  "description": "Real-time deep-space multi-agent observatory.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#03010a",
+  "theme_color": "#03010a"
+}

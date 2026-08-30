@@ -9,7 +9,12 @@ class Settings(BaseSettings):
 
     redis_url: str = "redis://localhost:6379"
     log_level: str = "info"
-    cors_origins: List[str] = ["http://localhost:3000", "http://127.0.0.1:3000"]
+    cors_origins: List[str] = [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:3001",
+        "http://127.0.0.1:3001",
+    ]
 
     # Agent tuning
     exoplanet_scan_interval: float = 4.0   # seconds between photometry scans
