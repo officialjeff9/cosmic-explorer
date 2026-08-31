@@ -292,3 +292,8 @@ Interactive docs: **http://localhost:8000/docs**
 ---
 
 *Space Observatory Agents — a template for multi-agent AI systems with real-time streaming UIs.*
+
+## 📺 Watch the Demo
+[![Cosmic Explorer Demo](https://img.youtube.com/vi/iln6K5xp7Nk/0.jpg)](https://www.youtube.com/watch?v=iln6K5xp7Nk)
+
+> Walkthrough of the Cosmic Explorer multi-agent architecture, live WebSocket telemetry stream, and interactive observatory UI built for the IBM AI Builders Challenge.
